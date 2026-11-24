@@ -179,46 +179,56 @@ a.city-link:hover .label { color: var(--white); }
 .cities li:last-child { border-bottom: 1px solid var(--line-c, #ffffff); }
 .arrow { width: max(20px, calc(32 * var(--u))); height: auto; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
-/* ---------- Phones and portrait screens ---------- */
+/* ---------- Phones and portrait screens ----------
+   One swipe = one slide: every slide is exactly one screen tall.
+   Text takes the space it needs; photographs flex to fill the rest. */
 @media (max-width: 820px), (max-aspect-ratio: 1/1) {
   :root {
     --u: calc(100vw / 860);
     --pad-x: 24px;
-    --pad-top: 32px;
-    --gap: 20px;
-    --t-title: 34px;
-    --t-num: 64px;
-    --t-sh: 20px;
-    --t-body: 17px;
-    --t-label: 13px;
+    --pad-top: 28px;
+    --gap: 16px;
+    --t-title: 30px;
+    --t-num: 52px;
+    --t-sh: 18px;
+    --t-body: 16px;
+    --t-label: 12px;
   }
-  html { scroll-snap-type: y proximity; }
-  .slide { height: auto; min-height: 100svh; display: flex; flex-direction: column; scroll-snap-stop: normal; }
-  .text { padding: var(--pad-top) var(--pad-x) 112px; }
-  .logo { bottom: 32px; width: 34px; }
-  .lockup { bottom: 32px; width: 220px; }
+  html { scroll-snap-type: y mandatory; }
+  .slide { height: 100vh; height: 100svh; display: flex; flex-direction: column; scroll-snap-stop: always; }
+  .text { flex: none; padding: var(--pad-top) var(--pad-x) 84px; }
+  .logo { bottom: 28px; width: 30px; }
+  .lockup { bottom: 28px; width: 200px; }
 
-  .split, .trip-slide, .mosaic-slide, .landing { display: flex; flex-direction: column; }
-  .split .media { order: -1; height: 52svh; flex: none; }
+  .split, .trip-slide, .mosaic-slide, .landing, .band { display: flex; flex-direction: column; }
+  .split .media, .band .media, .landing .media { order: -1; flex: 1 1 0; min-height: 22svh; height: auto; }
   .split.wide .text { max-width: none; }
-  .band { display: flex; flex-direction: column; }
-  .band .media { height: 52svh; }
-  .band .row { flex-direction: column; padding: 32px var(--pad-x) 112px; gap: 16px; }
+  .band .row { flex: none; flex-direction: column; gap: 12px; padding: 24px var(--pad-x) 84px; }
   .band .row .title, .band .row .body { width: auto; }
 
-  .tiles { grid-template-columns: 1fr 1fr; gap: 12px; padding: 24px var(--pad-x) 112px; }
-  .tile { gap: 10px; }
-  .tile .media { height: 30svh; }
+  .tiles-slide .text { padding-bottom: 16px; }
+  .tiles { flex: 1 1 0; min-height: 0; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 0 var(--pad-x) 84px; }
+  .tile { gap: 8px; min-height: 0; }
+  .tile .media { flex: 1 1 0; height: auto; min-height: 0; }
 
-  .trip-slide .trip { order: -1; height: 46svh; gap: 8px; }
-  .trip-slide .text, .mosaic-slide .text { padding-bottom: 112px; }
-  .mosaic-slide .mosaic { order: -1; height: 60svh; gap: 8px; }
+  .trip-slide .trip { order: -1; flex: 1 1 0; height: auto; min-height: 0; gap: 6px; }
+  .mosaic-slide .mosaic { order: -1; flex: 1 1 0; height: auto; min-height: 0; gap: 6px; }
 
-  .labs { gap: 12px; }
-  .bleed { min-height: 100svh; }
-  .bleed .centre { gap: 16px; }
-  .home-link { top: 16px; right: 16px; }
+  .stats { gap: 12px; }
+  .stat { gap: 4px; padding-top: 12px; }
+  .ruled .item { padding: 10px 0; }
+  .labs { gap: 10px; }
+  .bleed .centre { gap: 14px; }
+  .home-link { top: 14px; right: 16px; }
   .next { display: none; }
-  .landing .media { order: -1; height: 38svh; }
-  .city-link { padding: 20px 0; }
+  .landing .text { gap: 14px; }
+  .city-link { padding: 16px 0; }
+}
+
+/* Short phones (e.g. iPhone SE): drop the small per-slide logo so text never meets it */
+@media (max-width: 820px) and (max-height: 600px) {
+  .slide .logo { display: none; }
+  .text { padding-bottom: 32px; }
+  .band .row { padding-bottom: 32px; }
+  .tiles { padding-bottom: 32px; }
 }
